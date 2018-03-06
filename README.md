@@ -2,6 +2,11 @@
 Major updates to the original repo:
 * Tweak the model to **improve the accuracy by 8%**. Current accuracy (for both datasets) is close to that of the original paper. Major changes(improvement): 
     * Use spacy for tokenization (very important)
+    
+        ```python -m spacy.en.download all```
+        
+        to use `spacy.load("en")`
+        
     * Correct position encoding 
     * Combine source and target word index
     * Accept multi-target words as input

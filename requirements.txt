@@ -1,5 +1,5 @@
 progressbar2==3.34.3
-tensorflow==1.2.0
+tensorflow-gpu==1.2.0
 numpy==1.12.1
 lxml==3.7.3
 spacy==1.8.2

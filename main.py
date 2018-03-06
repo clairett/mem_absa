@@ -21,8 +21,8 @@ flags.DEFINE_float("init_std", 0.05, "weight initialization std [0.05]")
 flags.DEFINE_float("max_grad_norm", 10, "clip gradients to this norm [50]")
 flags.DEFINE_string("pretrain_file", "data/glove.6B.300d.txt",
                     "pre-trained glove vectors file path [../data/glove.6B.300d.txt]")
-flags.DEFINE_string("train_data", "data/Laptop_Train_v2.xml", "train gold data set path [./data/Laptop_Train_v2.xml]")
-flags.DEFINE_string("test_data", "data/Laptops_Test_Gold.xml", "test gold data set path [./data/Laptops_Test_Gold.xml]")
+flags.DEFINE_string("train_data", "data/Restaurants_Train_v2.xml", "train gold data set path [./data/Restaurants_Train_v2.xml]")
+flags.DEFINE_string("test_data", "data/Restaurants_Test_Gold.xml", "test gold data set path [./data/Restaurants_Test_Gold.xml]")
 flags.DEFINE_boolean("show", False, "print progress [False]")
 
 FLAGS = flags.FLAGS

@@ -4,7 +4,7 @@ import traceback
 
 import numpy as np
 import tensorflow as tf
-from progressbar import Bar
+import progressbar
 
 
 class MemN2N(object):
@@ -57,8 +57,6 @@ class MemN2N(object):
         location_encoding = 1 - tf.truediv(self.time, self.mem_size)
         location_encoding = tf.cast(location_encoding, tf.float32)
         location_encoding3dim = tf.tile(tf.expand_dims(location_encoding, 2), [1, 1, self.edim])
-
-
 
         # m_i = sum A_ij * x_ij + T_A_i
         Ain_c = tf.nn.embedding_lookup(self.A, self.context)
@@ -149,14 +147,12 @@ class MemN2N(object):
         context = np.ndarray([self.batch_size, self.mem_size])
 
         if self.show:
-            # from utils import ProgressBar
-            # bar = ProgressBar('Train', max=N)
-            bar = Bar('Train', max=N)
+            bar = progressbar.ProgressBar(max_value=N)
 
         np.random.seed(100)
         rand_idx, cur = np.random.permutation(len(source_data)), 0
         for idx in range(N):  # for each batch
-            if self.show: bar.next()
+            if self.show: bar.start()
 
             # initialize for each batch
             x.fill(self.pad_idx)
@@ -170,7 +166,7 @@ class MemN2N(object):
             '''
 
             for b in range(self.batch_size):
-                if cur >= len(rand_idx):  break
+                if cur >= len(rand_idx): break
 
                 m = rand_idx[cur]
                 target[b][target_label[m]] = 1
@@ -246,11 +242,11 @@ class MemN2N(object):
                 m += 1
 
             loss, summary, step = self.sess.run([self.loss, self.validation_summary, self.global_step],
-                                 feed_dict={
-                                     self.input: x,
-                                     self.time: time,
-                                     self.target: target,
-                                     self.context: context})
+                                                feed_dict={
+                                                    self.input: x,
+                                                    self.time: time,
+                                                    self.target: target,
+                                                    self.context: context})
             self.summary_writer.add_summary(summary, step)
             cost += np.sum(loss)
 
@@ -277,6 +273,7 @@ class MemN2N(object):
             print('epoch ' + str(idx) + '...')
             train_loss, train_acc = self.train(train_data)
             test_loss, test_acc = self.test(test_data)
-            print('train-loss=%.2f;train-acc=%.2f;test_loss=%.2f;test-acc=%.2f;' % (train_loss, train_acc, test_loss, test_acc))
+            print('train-loss=%.2f;train-acc=%.2f;test_loss=%.2f;test-acc=%.2f;' % (
+            train_loss, train_acc, test_loss, test_acc))
             # save_path = saver.save(self.sess, "./models/model.ckpt", global_step=idx)
             # print("Model saved in file: %s" % save_path)
